@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Lab — yönetim</title>
+<link rel="stylesheet" href="/assets/admin.css">
+<script src="/assets/admin.js" defer></script>
+</head>
+<body>
+<main>
+  <h1>Lab — yönetim</h1>
+  <p class="row"><input id="key" type="password" placeholder="Yönetim anahtarı" autocomplete="off"><button id="go" type="button">Aç</button> <span id="msg"></span></p>
+
+  <h2>Sayılar</h2>
+  <p>Görev ziyareti: <b id="s-visits">–</b> · Gelen çizim: <b id="s-sub">–</b> · Yayında: <b id="s-pub">–</b> · Sonuca geri dönüş: <b id="s-checks">–</b></p>
+  <p class="small">Nereden geldi: <span id="s-src">–</span></p>
+  <p class="small">Kim geldi: <span id="s-agent">–</span></p>
+  <p class="small">Hangi adres: <span id="s-path">–</span></p>
+
+  <h2>Onay bekleyen çizimler</h2>
+  <div id="pending" class="pending"></div>
+
+  <h2>Son 100 kayıt</h2>
+  <ol id="log" class="log"></ol>
+</main>
+</body>
+</html>

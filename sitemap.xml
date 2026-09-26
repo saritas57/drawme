@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://lab.mehmetsaritas.com/drawme</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lab.mehmetsaritas.com/drawme"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://lab.mehmetsaritas.com/tr/drawme"/></url>
+  <url><loc>https://lab.mehmetsaritas.com/tr/drawme</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lab.mehmetsaritas.com/drawme"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://lab.mehmetsaritas.com/tr/drawme"/></url>
+  <url><loc>https://lab.mehmetsaritas.com/wall</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lab.mehmetsaritas.com/wall"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://lab.mehmetsaritas.com/tr/wall"/></url>
+  <url><loc>https://lab.mehmetsaritas.com/tr/wall</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lab.mehmetsaritas.com/wall"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://lab.mehmetsaritas.com/tr/wall"/></url>
+  <url><loc>https://lab.mehmetsaritas.com/mcp-info</loc></url>
+</urlset>

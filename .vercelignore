@@ -1,0 +1,8 @@
+.env*
+.vercel
+.agents
+.claude
+skills-lock.json
+node_modules
+server.json
+README.md

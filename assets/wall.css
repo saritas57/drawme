@@ -1,0 +1,29 @@
+:root{--bg:#0c0c0e;--fg:#f2f1ec;--muted:#8b8a83;--line:#232327;--card:#141417;--accent:#e8c15a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+header{max-width:1000px;margin:0 auto;padding:56px 16px 20px;text-align:center}
+h1{font-size:26px;font-weight:600;margin:0 0 10px}
+.frame{color:var(--muted);font-size:15px;margin:0 auto;max-width:520px}
+.counter{margin:22px auto 0;font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted)}
+.counter b{color:var(--fg)}
+.live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#38d66b;margin-right:6px;vertical-align:middle;animation:p 1.6s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
+main{max-width:1000px;margin:0 auto;padding:16px}
+.hero{text-align:center;margin:18px 0 34px}
+.hero .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:8px}
+.heroimg{width:220px;height:220px;background:#fff;border-radius:14px;border:1px solid var(--line);display:block;margin:0 auto}
+.hmeta{font-size:13px;color:var(--muted);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+.card .art{width:100%;aspect-ratio:1;background:#fff;border-radius:8px;display:block}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:var(--muted);gap:6px}
+.meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.like{cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:20px;padding:3px 10px;font-size:12px;flex:none}
+.like:hover{border-color:var(--accent)}
+.like.done{color:var(--accent);border-color:var(--accent)}
+.feed{max-width:1000px;margin:26px auto 60px;color:var(--muted);font-size:13px;text-align:center;padding:0 16px}
+.empty{color:var(--muted);text-align:center;padding:40px 0}
+.topbar{max-width:1000px;margin:0 auto;padding:16px 16px 0;display:flex;justify-content:flex-end}
+.lang{font:600 11.5px/1 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;letter-spacing:.14em;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:0 14px;min-height:36px;display:inline-flex;align-items:center;text-decoration:none}
+.lang:hover{border-color:var(--accent)}
+header{padding-top:24px}
