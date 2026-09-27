@@ -24,6 +24,7 @@
       $('s-visits').textContent = s.visits; $('s-sub').textContent = s.submitted;
       $('s-pub').textContent = s.published; $('s-checks').textContent = s.checks;
       $('s-src').textContent = kv(s.src); $('s-agent').textContent = kv(s.agent); $('s-path').textContent = kv(s.path);
+      $('s-probe').textContent = kv(j.probes);
       var av = j.agent_votes || {};
       $('v-total').textContent = av.total || 0;
       $('v-agent').textContent = kv(av.agent); $('v-model').textContent = kv(av.model); $('v-src').textContent = kv(av.src);

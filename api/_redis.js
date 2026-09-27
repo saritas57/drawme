@@ -43,7 +43,7 @@ function classify(ua) {
   const u = String(ua || '').toLowerCase();
   for (const [k, n] of BOTS) if (u.includes(k.toLowerCase())) return n;
   // MCP dizinlerinin ve tarayıcıların "sunucu çalışıyor mu" yoklamaları (mcphub-probe, ProofBench, verifymcp, BrickBlueBot vb.)
-  if (/probe|registry|health/.test(u)) return 'MCP directory probe';
+  if (/probe|registry|health|mcpindex|mcp-index|sondes/.test(u)) return 'MCP directory probe';
   if (/bot\b|bot\/|crawler|spider/.test(u) && !u.includes('mozilla')) return 'other bot';
   if (u.includes('mozilla')) return 'browser';
   return u ? 'other' : 'empty';
@@ -57,6 +57,13 @@ async function logVisit(req, path, count) {
   const q = (req.query && req.query.src) ? String(req.query.src).slice(0, 40) : '';
   const src = q || (ref ? 'referrer' : 'direct');
   const agent = classify(rawUa); // tanıma tam metin üzerinden: bot adı 300 karakterden sonra kalsa da yakalanır
+  // MCP dizinlerinin kayıt botları (sunucu açık mı yoklaması) son kayıtlar listesine yazılmaz, yalnız adlarıyla sayılır.
+  // Böylece listede gerçek ziyaretler kaybolmaz.
+  if (agent === 'MCP directory probe') {
+    const name = (ua.split(/[\/\s(]/)[0] || 'unknown').slice(0, 40);
+    await pipe([['HINCRBY', 'v:probe', name, '1']]);
+    return { src, agent, ua };
+  }
   const entry = JSON.stringify({ t: Date.now(), path, src, agent, ua, ref });
   const cmds = [
     ['HINCRBY', 'v:path', path, '1'],
