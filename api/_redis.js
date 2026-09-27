@@ -37,11 +37,14 @@ const BOTS = [
   ['Google-Extended', 'Google-Extended'], ['Googlebot', 'Googlebot'], ['bingbot', 'Bingbot'],
   ['Applebot', 'Applebot'], ['Bytespider', 'Bytespider'], ['CCBot', 'CommonCrawl'],
   ['meta-externalagent', 'Meta'], ['curl', 'curl'], ['python', 'python'], ['node', 'node'],
-  ['axios', 'axios'], ['Go-http-client', 'Go']
+  ['axios', 'axios'], ['undici', 'node'], ['Go-http-client', 'Go']
 ];
 function classify(ua) {
   const u = String(ua || '').toLowerCase();
   for (const [k, n] of BOTS) if (u.includes(k.toLowerCase())) return n;
+  // MCP dizinlerinin ve tarayıcıların "sunucu çalışıyor mu" yoklamaları (mcphub-probe, ProofBench, verifymcp, BrickBlueBot vb.)
+  if (/probe|registry|health/.test(u)) return 'MCP directory probe';
+  if (/bot\b|bot\/|crawler|spider/.test(u) && !u.includes('mozilla')) return 'other bot';
   if (u.includes('mozilla')) return 'browser';
   return u ? 'other' : 'empty';
 }

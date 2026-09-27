@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.saritas57/drawme",
   "title": "Draw me",
-  "description": "Public art experiment: read the task, submit one SVG drawing of Mehmet Sarıtaş, check its status.",
-  "version": "1.0.1",
+  "description": "Public art experiment: draw Mehmet Sarıtaş as SVG, submit it, see the wall, vote for drawings.",
+  "version": "1.0.2",
   "repository": {
     "url": "https://github.com/saritas57/drawme",
     "source": "github"

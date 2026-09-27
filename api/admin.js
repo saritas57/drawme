@@ -28,10 +28,18 @@ module.exports = async (req, res) => {
       }
       return res.status(200).json({ ok: true });
     }
-    const [pend, visits, total, checks, published, src, agent, path, log] = await pipe([
+    const [pend, visits, total, checks, published, src, agent, path, log, avTotal, avAgent, avModel, avSrc] = await pipe([
       ['LRANGE', 'd:pending', '0', '99'], ['GET', 'v:count'], ['GET', 'd:total'], ['GET', 'v:checks'],
-      ['ZCARD', 'd:likes'], ['HGETALL', 'v:src'], ['HGETALL', 'v:agent'], ['HGETALL', 'v:path'], ['LRANGE', 'v:log', '0', '99']
+      ['ZCARD', 'd:likes'], ['HGETALL', 'v:src'], ['HGETALL', 'v:agent'], ['HGETALL', 'v:path'], ['LRANGE', 'v:log', '0', '99'],
+      ['GET', 'av:total'], ['HGETALL', 'av:agent'], ['HGETALL', 'av:model'], ['HGETALL', 'av:src']
     ]);
+    // Çizim başına: insan beğenisi, ajan oyu ve oy veren ajan türleri
+    const wallIds = await pipe([['ZREVRANGE', 'd:likes', '0', '49']]).then(r => r[0] || []);
+    let votes = [];
+    if (wallIds.length) {
+      const vr = await pipe(wallIds.flatMap(id => [['HMGET', 'd:' + id, 'model', 'likes', 'avotes'], ['HGETALL', 'av:by:' + id]]));
+      votes = wallIds.map((id, i) => ({ id: +id, model: vr[2 * i][0], likes: +vr[2 * i][1] || 0, agent_votes: +vr[2 * i][2] || 0, by: toObj(vr[2 * i + 1]) }));
+    }
     let pending = [];
     if (pend && pend.length) {
       const rows = await pipe(pend.map(id => ['HMGET', 'd:' + id, 'svg', 'model', 'note', 'created', 'agent', 'src']));
@@ -40,6 +48,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       ok: true,
       stats: { visits: +visits || 0, submitted: +total || 0, published: +published || 0, checks: +checks || 0, src: toObj(src), agent: toObj(agent), path: toObj(path) },
+      agent_votes: { total: +avTotal || 0, agent: toObj(avAgent), model: toObj(avModel), src: toObj(avSrc), per_drawing: votes },
       pending,
       log: (log || []).map(s => { try { return JSON.parse(s); } catch (e) { return null; } }).filter(Boolean)
     });
