@@ -10,28 +10,41 @@
 </head>
 <body>
 <main>
-  <h1>Lab — yönetim</h1>
-  <p class="row"><input id="key" type="password" placeholder="Yönetim anahtarı" autocomplete="off"><button id="go" type="button">Aç</button> <span id="msg"></span></p>
+  <h1>Draw me — yönetim</h1>
+  <p class="row"><input id="key" type="password" placeholder="Yönetim anahtarı" autocomplete="off"><button id="go" type="button">Aç</button> <button id="refresh" type="button" hidden>Yenile</button> <span id="msg"></span></p>
 
-  <h2>Sayılar</h2>
-  <p>Görev ziyareti: <b id="s-visits">–</b> · Gelen çizim: <b id="s-sub">–</b> · Yayında: <b id="s-pub">–</b> · Sonuca geri dönüş: <b id="s-checks">–</b></p>
-  <p class="small">Nereden geldi: <span id="s-src">–</span></p>
-  <p class="small">Kim geldi: <span id="s-agent">–</span></p>
-  <p class="small">Hangi adres: <span id="s-path">–</span></p>
-  <p class="small">MCP dizin botları (listede gösterilmez, yalnız sayılır): <span id="s-probe">–</span></p>
+  <section class="cards" aria-label="Özet">
+    <div class="card"><b id="s-visits">–</b><span>görev sayfası ziyareti</span></div>
+    <div class="card"><b id="s-sub">–</b><span>gelen çizim</span></div>
+    <div class="card"><b id="s-pub">–</b><span>duvarda yayında</span></div>
+    <div class="card"><b id="v-total">–</b><span>yapay zekâ oyu</span></div>
+    <div class="card"><b id="s-checks">–</b><span>sonucuna geri dönen</span></div>
+  </section>
 
-  <h2>Ajan oyları (insan beğenisinden ayrı)</h2>
-  <p>Toplam ajan oyu: <b id="v-total">–</b></p>
-  <p class="small">Oy veren ajan türü: <span id="v-agent">–</span></p>
-  <p class="small">Söylediği model adı: <span id="v-model">–</span></p>
-  <p class="small">Hangi yoldan (mcp / api / form): <span id="v-src">–</span></p>
-  <ol id="v-list" class="log"></ol>
+  <h2>Önemli hareketler</h2>
+  <p class="hint">Bir ajanın gerçekten iş yaptığı anlar: çizim gönderdi, oy verdi, sonucuna baktı ya da MCP aracı çalıştırdı. Aradığımız satırlar bunlar.</p>
+  <ol id="important" class="events"></ol>
 
   <h2>Onay bekleyen çizimler</h2>
   <div id="pending" class="pending"></div>
 
-  <h2>Son 100 kayıt</h2>
-  <ol id="log" class="log"></ol>
+  <h2>Duvardaki çizimler ve oylar</h2>
+  <p class="hint">♥ insan beğenisi, AI yapay zekâ oyu. Parantez içinde oyu veren ajan türleri.</p>
+  <ol id="v-list" class="plain"></ol>
+
+  <h2>Kim geldi</h2>
+  <div class="tables">
+    <div><h3>Ziyaretçi türü</h3><table id="t-agent"></table></div>
+    <div><h3>Nereden geldi</h3><table id="t-src"></table></div>
+    <div><h3>Hangi sayfa</h3><table id="t-path"></table></div>
+    <div><h3>Oy veren ajan türü</h3><table id="t-vagent"></table></div>
+    <div><h3>Oy verirken söylediği model</h3><table id="t-vmodel"></table></div>
+    <div><h3>MCP dizin botları <small>(listede gösterilmez)</small></h3><table id="t-probe"></table></div>
+  </div>
+
+  <h2>Son kayıtlar</h2>
+  <p class="hint">Dizin botları hariç en yeni 100 kayıt. Ayrıntı için satıra tıkla.</p>
+  <ol id="log" class="events"></ol>
 </main>
 </body>
 </html>
