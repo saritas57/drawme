@@ -43,11 +43,13 @@ function classify(ua) {
   const u = String(ua || '').toLowerCase();
   for (const [k, n] of BOTS) if (u.includes(k.toLowerCase())) return n;
   // MCP dizinlerinin ve tarayıcıların "sunucu çalışıyor mu" yoklamaları (mcphub-probe, ProofBench, verifymcp, BrickBlueBot vb.)
-  if (/probe|registry|health|mcpindex|mcp-index|sondes/.test(u)) return 'MCP directory probe';
+  if (/probe|registry|health|mcpindex|mcp-index|sondes|liveness|mcpbeat|sentineloracle|collector|observatory|uptime|monitor/.test(u)) return 'MCP directory probe';
   if (/bot\b|bot\/|crawler|spider/.test(u) && !u.includes('mozilla')) return 'other bot';
   if (u.includes('mozilla')) return 'browser';
   return u ? 'other' : 'empty';
 }
+
+const HANDSHAKE = /^\/mcp (initialize|notifications\/initialized|tools\/list|server\/discover|ping|resources\/list|resources\/templates\/list|prompts\/list)$/;
 
 // Ziyaret kaydı. count=true ise "görev sayfası ziyareti" sayacını da artırır.
 async function logVisit(req, path, count) {
@@ -62,6 +64,13 @@ async function logVisit(req, path, count) {
   if (agent === 'MCP directory probe') {
     const name = (ua.split(/[\/\s(]/)[0] || 'unknown').slice(0, 40);
     await pipe([['HINCRBY', 'v:probe', name, '1']]);
+    return { src, agent, ua };
+  }
+  // MCP'ye yalnız bağlanıp araç listesine bakan istekler (araç çalıştırmayan) listeye yazılmaz; istemci adıyla sayılır.
+  // Yeni bir istemci adı (ör. gerçek bir ajan uygulaması) bu sayımda görünür; araç çalıştırırsa o satır listede çıkar.
+  if (HANDSHAKE.test(path)) {
+    const name = (ua.split(/[\/\s(]/)[0] || 'kimliksiz').slice(0, 40);
+    await pipe([['HINCRBY', 'v:mcpcheck', name, '1']]);
     return { src, agent, ua };
   }
   const entry = JSON.stringify({ t: Date.now(), path, src, agent, ua, ref });
@@ -81,4 +90,4 @@ function toObj(flat) {
   return o;
 }
 
-module.exports = { pipe, ip, hash, esc, b64, baseUrl, classify, logVisit, toObj };
+module.exports = { pipe, ip, hash, esc, b64, baseUrl, classify, logVisit, toObj, HANDSHAKE };

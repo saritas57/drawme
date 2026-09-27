@@ -125,6 +125,7 @@
       table('t-vagent', av.agent, agentName);
       table('t-vmodel', av.model, function (k) { return k === '-' ? 'söylemedi' : k; });
       table('t-probe', j.probes);
+      table('t-check', j.mcp_checks);
 
       var l = $('log'); l.textContent = '';
       if (!j.log.length) l.appendChild(el('li', 'empty', 'Kayıt yok.'));

@@ -1,6 +1,6 @@
 // /api/admin -> sana özel: bekleyen çizimler, onay/ret, ziyaret istatistikleri. ADMIN_KEY ister.
 const crypto = require('crypto');
-const { pipe, toObj, classify } = require('./_redis');
+const { pipe, toObj, classify, HANDSHAKE } = require('./_redis');
 
 function authed(req) {
   const k = process.env.ADMIN_KEY || '';
@@ -28,10 +28,10 @@ module.exports = async (req, res) => {
       }
       return res.status(200).json({ ok: true });
     }
-    const [pend, visits, total, checks, published, src, agent, path, log, avTotal, avAgent, avModel, avSrc, probe] = await pipe([
+    const [pend, visits, total, checks, published, src, agent, path, log, avTotal, avAgent, avModel, avSrc, probe, mcpcheck] = await pipe([
       ['LRANGE', 'd:pending', '0', '99'], ['GET', 'v:count'], ['GET', 'd:total'], ['GET', 'v:checks'],
       ['ZCARD', 'd:likes'], ['HGETALL', 'v:src'], ['HGETALL', 'v:agent'], ['HGETALL', 'v:path'], ['LRANGE', 'v:log', '0', '299'],
-      ['GET', 'av:total'], ['HGETALL', 'av:agent'], ['HGETALL', 'av:model'], ['HGETALL', 'av:src'], ['HGETALL', 'v:probe']
+      ['GET', 'av:total'], ['HGETALL', 'av:agent'], ['HGETALL', 'av:model'], ['HGETALL', 'av:src'], ['HGETALL', 'v:probe'], ['HGETALL', 'v:mcpcheck']
     ]);
     // Çizim başına: insan beğenisi, ajan oyu ve oy veren ajan türleri
     const wallIds = await pipe([['ZREVRANGE', 'd:likes', '0', '49']]).then(r => r[0] || []);
@@ -51,9 +51,10 @@ module.exports = async (req, res) => {
       agent_votes: { total: +avTotal || 0, agent: toObj(avAgent), model: toObj(avModel), src: toObj(avSrc), per_drawing: votes },
       pending,
       probes: toObj(probe),
-      // Eski kayıtlardaki dizin botları da listeden süzülür; en yeni 100 gerçek kayıt gösterilir.
+      mcp_checks: toObj(mcpcheck),
+      // Eski kayıtlardaki dizin botları ve yalnız bağlanıp bakan MCP istekleri de süzülür; en yeni 100 gerçek kayıt gösterilir.
       log: (log || []).map(s => { try { return JSON.parse(s); } catch (e) { return null; } })
-        .filter(e => e && classify(e.ua) !== 'MCP directory probe').slice(0, 100)
+        .filter(e => e && classify(e.ua) !== 'MCP directory probe' && !HANDSHAKE.test(String(e.path || ''))).slice(0, 100)
     });
   } catch (e) {
     return res.status(503).json({ ok: false, error: 'Storage is not available yet.' });
