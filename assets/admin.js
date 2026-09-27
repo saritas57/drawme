@@ -52,7 +52,7 @@
       var l = $('log'); l.textContent = '';
       j.log.forEach(function (e) {
         var li = document.createElement('li');
-        li.textContent = new Date(e.t).toLocaleString('tr-TR') + ' · ' + e.path + ' · ' + e.src + ' · ' + e.agent + (e.id ? ' · #' + e.id : '') + (e.model ? ' · model: ' + e.model : '') + ' · ' + String(e.ua || '').slice(0, 140);
+        li.textContent = new Date(e.t).toLocaleString('tr-TR') + ' · ' + e.path + ' · ' + e.src + ' · ' + e.agent + (e.id ? ' · #' + e.id : '') + (e.model ? ' · model: ' + e.model : '') + (e.ref ? ' · geldiği link: ' + e.ref : '') + ' · ' + String(e.ua || '').slice(0, 140);
         l.appendChild(li);
       });
     }).catch(function () { $('msg').textContent = 'Bağlantı hatası.'; });
